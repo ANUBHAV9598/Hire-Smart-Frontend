@@ -4,8 +4,11 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-// Read env via import.meta.env when available; fall back for node during build
-const isVercel = (typeof process !== 'undefined' && process.env?.VERCEL === '1') || (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VERCEL === '1')
+// Use CI env flags to decide base
+const isVercel = (typeof process !== 'undefined' && process.env?.VERCEL === '1')
+const isNetlify = (typeof process !== 'undefined' && process.env?.NETLIFY === 'true')
+const isGhPages = (typeof process !== 'undefined' && process.env?.GITHUB_PAGES === 'true')
+const basePath = isGhPages ? '/hire-smart' : '/'
 
 export default defineConfig({
   plugins: [react()],
@@ -15,8 +18,8 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom']
   },
-  // Use root base on Vercel, GitHub Pages needs subpath
-  base: isVercel ? "/" : "/hire-smart",
+  // Root base for Vercel/Netlify/most hosts; subpath only for GitHub Pages
+  base: basePath,
   build: {
     sourcemap: true,
     chunkSizeWarningLimit: 1200,
