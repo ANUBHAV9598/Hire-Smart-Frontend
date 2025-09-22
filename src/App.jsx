@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from './components/layouts/MainLayout';
-import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
-import Home from './components/Home';
-import Jobs from './components/Jobs';
-import Browse from './components/Browse';
-import Profile from './components/Profile';
-import JobDescription from './components/JobDescription';
-import Companies from './components/admin/Companies';
-import CompanyCreate from './components/admin/CompanyCreate';
-import CompanySetup from './components/admin/CompanySetup';
-import AdminJobs from "./components/admin/AdminJobs";
-import PostJob from './components/admin/PostJob';
-import Applicants from './components/admin/Applicants';
 import ProtectedRoute from './components/admin/ProtectedRoute';
-import AcceptedApplicationsTable from './components/admin/AcceptedApplicationsTable';
-import PaymentSuccess from './components/admin/PaymentSuccess';
-import StudentsList from './components/StudentsList';
-import AboutUs from './pages/AboutUs';
-import Contact from './components/Contact';
-import BlogSection from './components/BlogSection';
-import HelpCenter from './pages/HelpCenter';
+
+// Lazy-loaded route components
+const Login = lazy(() => import('./components/auth/Login'));
+const Signup = lazy(() => import('./components/auth/Signup'));
+const Home = lazy(() => import('./components/Home'));
+const Jobs = lazy(() => import('./components/Jobs'));
+const Browse = lazy(() => import('./components/Browse'));
+const Profile = lazy(() => import('./components/Profile'));
+const JobDescription = lazy(() => import('./components/JobDescription'));
+const Companies = lazy(() => import('./components/admin/Companies'));
+const CompanyCreate = lazy(() => import('./components/admin/CompanyCreate'));
+const CompanySetup = lazy(() => import('./components/admin/CompanySetup'));
+const AdminJobs = lazy(() => import('./components/admin/AdminJobs'));
+const PostJob = lazy(() => import('./components/admin/PostJob'));
+const Applicants = lazy(() => import('./components/admin/Applicants'));
+const AcceptedApplicationsTable = lazy(() => import('./components/admin/AcceptedApplicationsTable'));
+const PaymentSuccess = lazy(() => import('./components/admin/PaymentSuccess'));
+const StudentsList = lazy(() => import('./components/StudentsList'));
+const AboutUs = lazy(() => import('./pages/AboutUs'));
+const Contact = lazy(() => import('./components/Contact'));
+const BlogSection = lazy(() => import('./components/BlogSection'));
+const HelpCenter = lazy(() => import('./pages/HelpCenter'));
 
 const appRouter = createHashRouter([
   {
@@ -188,7 +190,11 @@ const appRouter = createHashRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={appRouter} />;
+  return (
+    <Suspense fallback={<div style={{ padding: 24 }}>Loading...</div>}>
+      <RouterProvider router={appRouter} />
+    </Suspense>
+  );
 }
 
 export default App;
