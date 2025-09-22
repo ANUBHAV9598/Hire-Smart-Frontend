@@ -13,6 +13,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    dedupe: ['react', 'react-dom']
   },
   // Use root base on Vercel, GitHub Pages needs subpath
   base: isVercel ? "/" : "/hire-smart",
