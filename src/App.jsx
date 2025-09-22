@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainLayout from './components/layouts/MainLayout';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
@@ -25,7 +25,7 @@ const Contact = lazy(() => import('./components/Contact'));
 const BlogSection = lazy(() => import('./components/BlogSection'));
 const HelpCenter = lazy(() => import('./pages/HelpCenter'));
 
-const appRouter = createHashRouter([
+const appRouter = createBrowserRouter([
   {
     path: '/',
     element: (
@@ -187,7 +187,7 @@ const appRouter = createHashRouter([
       </ProtectedRoute>
     )
   }
-]);
+], { basename: import.meta.env.BASE_URL });
 
 function App() {
   return (
