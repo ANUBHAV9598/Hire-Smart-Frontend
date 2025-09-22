@@ -17,6 +17,7 @@ export default defineConfig({
   // Use root base on Vercel, GitHub Pages needs subpath
   base: isVercel ? "/" : "/hire-smart",
   build: {
+    sourcemap: true,
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
