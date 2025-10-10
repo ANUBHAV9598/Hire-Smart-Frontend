@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../shared/Navbar';
 
-const stripePromise = loadStripe('pk_test_51RIEIQCoNnfZ861nUFSGFYWW74jN8GYloqImcbXsty8Pu5gyNQDdVZRokFSEBwgBztHO0ArIdCt7aV3N5wJVxsv100xStBhOd0'); // replace with your Stripe key
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY); // replace with your Stripe key
 
 // Animation variants
 const containerVariants = {
