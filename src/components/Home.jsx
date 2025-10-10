@@ -1,42 +1,59 @@
-import { useEffect } from 'react'
-import HeroSection from './HeroSection'
-import CategoryCarousel from './CategoryCarousel'
-import LatestJobs from './LatestJobs'
-import Footer from './shared/Footer'
-import useGetAllJobs from '@/hooks/useGetAllJobs'
+import { useEffect, lazy, Suspense } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import StudentsList from './StudentsList'
-import "./home.css"
-import Chatbot from './Chatbot'
-import SuccessStories from './SuccessStories'
-import BlogSection from './BlogSection'
-import Contact from './Contact'
+import useGetAllJobs from '@/hooks/useGetAllJobs'
 import Navbar from './shared/Navbar'
+import HeroSection from './HeroSection'
+import "./home.css"
+
+// Lazy load components that are below the fold
+const CategoryCarousel = lazy(() => import('./CategoryCarousel'))
+const LatestJobs = lazy(() => import('./LatestJobs'))
+const Footer = lazy(() => import('./shared/Footer'))
+const StudentsList = lazy(() => import('./StudentsList'))
+const Chatbot = lazy(() => import('./Chatbot'))
+const SuccessStories = lazy(() => import('./SuccessStories'))
+const BlogSection = lazy(() => import('./BlogSection'))
+const Contact = lazy(() => import('./Contact'))
+
+// Loading component
+const SectionLoader = () => (
+  <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <div className="animate-pulse">Loading...</div>
+  </div>
+)
 
 const Home = () => {
   useGetAllJobs();
   const { user } = useSelector(store => store.auth);
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (user?.role === 'recruiter') {
       navigate("/admin/companies");
     }
-  }, []);
+  }, [user, navigate]);
+
   return (
     <div>
       <Navbar />
       <div className='homeDiv'>
         <HeroSection />
-        <Chatbot />
-        <CategoryCarousel />
-        <StudentsList />
-        <SuccessStories />
-        <BlogSection />
-        <LatestJobs />
-        <Contact />
+        
+        <Suspense fallback={<SectionLoader />}>
+          <Chatbot />
+          <CategoryCarousel />
+          <StudentsList />
+          <SuccessStories />
+          <BlogSection />
+          <LatestJobs />
+          <Contact />
+        </Suspense>
       </div>
-      <Footer />
+      
+      <Suspense fallback={<SectionLoader />}>
+        <Footer />
+      </Suspense>
     </div>
   )
 }
